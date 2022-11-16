@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { Form, Select, Input, Radio, Row, Col, Upload, DatePicker } from 'antd';
+import { Form, Input, Radio, Row, Col, Upload, DatePicker } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { PlusOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
 import moment from 'moment';
 
 import {
   changeUserNeedUpdateAvatar,
   deleteUserNeedUpdateAvatar,
-  getIdentity,
   selectUserIsLoading,
   selectUserNeedUpdate,
   updateInformation,
@@ -50,12 +48,9 @@ const formItemLayout = {
   },
 };
 
-const { Option } = Select;
-
 export default function UserForm() {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const { user_id } = useParams();
   const [avatar, setAvatar] = useState([]);
   const [oldImage, setOldImage] = useState(false);
   const isLoading = useSelector(selectUserIsLoading);
@@ -67,24 +62,18 @@ export default function UserForm() {
   });
 
   useEffect(() => {
-    dispatch(getIdentity());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (Object.keys(userNeedUpdate).length > 0) {
       form.setFieldsValue({
         email: userNeedUpdate.email,
-        blood: 'AB+',
         first_name: userNeedUpdate.first_name,
         last_name: userNeedUpdate.last_name,
         phone: userNeedUpdate.phone,
         date_of_birth: moment(userNeedUpdate.date_of_birth),
-        gender:
-          userNeedUpdate.gender.charAt(0).toUpperCase() +
-          userNeedUpdate.gender.slice(1),
-        state: userNeedUpdate.state,
-        city: userNeedUpdate.city,
+        gender: userNeedUpdate.gender,
         address: userNeedUpdate.address,
+        description: userNeedUpdate.description,
+        other_document: userNeedUpdate.other_document,
+        work_progress: userNeedUpdate.work_progress,
       });
     }
   }, [form, userNeedUpdate]);
@@ -110,15 +99,18 @@ export default function UserForm() {
     formData.append('email', values.email);
     formData.append('phone', `${values.phone}`);
     formData.append('gender', values.gender);
-    formData.append('state', values.state);
-    formData.append('city', values.city);
-    formData.append('address', values.address);
-    formData.append('date_of_birth', values.date_of_birth.format('YYYY-MM-DD'));
+    formData.append('other_document', values.other_document);
+    formData.append('work_progress', values.work_progress);
+    formData.append(
+      'date_of_birth',
+      values.date_of_birth.toDate().toISOString()
+    );
+    formData.append('description', values.description);
     if (oldImage) {
       formData.append('old_image', oldImage);
       formData.append('avatar', avatar[0]);
     }
-    formData.append('patient_id', userNeedUpdate.patient_id);
+    formData.append('doctor_id', userNeedUpdate.doctor_id);
 
     dispatch(updateInformation(formData));
   };
@@ -219,40 +211,8 @@ export default function UserForm() {
             >
               <Input className="input" placeholder="Last Name" />
             </Form.Item>
-
-            {/* Phone */}
-            <Form.Item
-              className="form-input-group"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please enter your phone!',
-                },
-              ]}
-              label="Phone"
-              name="phone"
-            >
-              <Input className="input" placeholder="19908198" />
-            </Form.Item>
           </Col>
           <Col className="right" sm={24} md={12} lg={12} xl={12} xll={12}>
-            {/* Blood group */}
-            <Form.Item
-              name="blood"
-              label="Blood group"
-              className="form-input-group"
-            >
-              <Select placeholder="Select blood group">
-                <Option value="A-">A-</Option>
-                <Option value="A+">A+</Option>
-                <Option value="B-">B-</Option>
-                <Option value="B+">B+</Option>
-                <Option value="AB-">AB-</Option>
-                <Option value="AB+">AB+</Option>
-                <Option value="O">O</Option>
-              </Select>
-            </Form.Item>
-
             {/* Date of birth */}
             <Form.Item
               className="form-input-group"
@@ -289,53 +249,67 @@ export default function UserForm() {
               </Radio.Group>
             </Form.Item>
 
-            {/* State */}
+            {/* Phone */}
             <Form.Item
               className="form-input-group"
               rules={[
                 {
                   required: true,
-                  message: 'Please enter your state!',
+                  message: 'Please enter your phone!',
                 },
               ]}
-              label="State"
-              name="state"
+              label="Phone"
+              name="phone"
             >
-              <Input className="input" placeholder="Entery your state" />
+              <Input className="input" placeholder="19908198" />
             </Form.Item>
           </Col>
         </Row>
 
-        {/* City */}
+        {/* Description */}
         <Form.Item
-          className="form-input-group"
+          label="Description"
+          name="description"
           rules={[
             {
               required: true,
-              message: 'Please enter your city!',
+              message: 'Please enter your description!',
             },
           ]}
-          label="City"
-          name="city"
         >
-          <Input className="input" placeholder="Enter your city" />
+          <Input.TextArea autosize={{ minRows: 3, maxRows: 6 }} />
         </Form.Item>
 
-        {/* Address */}
+        {/* Other document */}
+        <Form.Item label="Other document" name="other_document">
+          <Input.TextArea
+            autosize={{ minRows: 3, maxRows: 6 }}
+            style={{
+              minHeight: 100,
+            }}
+          />
+        </Form.Item>
+
+        {/* Work progress */}
         <Form.Item
-          className="form-input-group"
+          label="Work progress"
+          name="work_progress"
           rules={[
             {
               required: true,
-              message: 'Please enter your address!',
+              message: 'Please enter your work progress!',
             },
           ]}
-          label="Address"
-          name="address"
         >
-          <Input className="input" placeholder="Enter address" />
+          <Input.TextArea
+            autosize={{ minRows: 3, maxRows: 6 }}
+            style={{
+              minHeight: 100,
+            }}
+          />
         </Form.Item>
 
+        {/* Buttons */}
         <Form.Item>
           <Button type="submit" className="button button--blue--dark">
             <span>{isLoading ? <Spinner /> : 'Save Changes'}</span>

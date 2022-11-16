@@ -24,7 +24,7 @@ axiosClient.interceptors.response.use(
         alert(
           'Sign In session has expired, you will be redirected to sign in!'
         );
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('currentDoctor');
         localStorage.removeItem('accessToken');
         window.location.href = '/signin';
         break;

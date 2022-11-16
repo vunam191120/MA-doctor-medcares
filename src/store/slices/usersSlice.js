@@ -14,33 +14,24 @@ export const signIn = createAsyncThunk(
       localStorage.setItem('accessToken', accessToken);
 
       // Get information of current user after getting token
-      const currentUser = await userAPI.getOne();
+      const currentDoctor = await userAPI.getOne();
       localStorage.setItem(
-        'currentUser',
-        JSON.stringify(currentUser.data.data)
+        'currentDoctor',
+        JSON.stringify(currentDoctor.data.data)
       );
-      return currentUser.data.data;
+      return currentDoctor.data.data;
     } catch (error) {
       return Promise.reject(error.message);
     }
   }
 );
 
-export const signUp = createAsyncThunk('usersSlice/signUp', async (patient) => {
-  try {
-    const result = await userAPI.signUp(patient);
-    return result.data.data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-});
-
 export const updateInformation = createAsyncThunk(
   'usersSlice/updateInformation',
   async (newInformation) => {
     try {
-      await userAPI.update(newInformation);
-      return newInformation;
+      const result = await userAPI.update(newInformation);
+      return result.data.data;
     } catch (error) {
       return Promise.reject(error);
     }
@@ -123,27 +114,6 @@ const usersSlice = createSlice({
       state.isLoading = false;
       state.hasError = true;
     },
-    // Sign Up
-    [signUp.pending]: (state) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [signUp.fulfilled]: (state, action) => {
-      message.success(
-        'Signed Up successfully, OTP has been sent. Please login and verify your email!',
-        5
-      );
-      setTimeout(() => {
-        window.location.href = '/signin';
-      }, 2000);
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [signUp.rejected]: (state, action) => {
-      message.error(`Signed Up failed. Due to ${action.error.message}`, 3);
-      state.isLoading = false;
-      state.hasError = true;
-    },
     // Update
     [updateInformation.pending]: (state) => {
       state.isLoading = true;
@@ -151,9 +121,10 @@ const usersSlice = createSlice({
     },
     [updateInformation.fulfilled]: (state, action) => {
       message.success('Updated your information successfully!', 3);
-      let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      currentUser = action.payload;
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      let currentDoctor = JSON.parse(localStorage.getItem('currentDoctor'));
+      currentDoctor = action.payload;
+      localStorage.setItem('currentDoctor', JSON.stringify(currentDoctor));
+      action.payload.avatar = [{ url: action.payload.avatar }];
       state.userNeedUpdate = action.payload;
       state.isLoading = false;
       state.hasError = false;

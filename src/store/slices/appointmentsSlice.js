@@ -2,28 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { message } from 'antd';
 import appointmentAPI from '../../ api/appointment';
 
-export const bookAppointment = createAsyncThunk(
-  'appointmentsSlice/bookAppointment',
-  async (data) => {
-    try {
-      const { newAppointment, nextStep } = data;
-      const result = await appointmentAPI.book(newAppointment);
-      return {
-        result: result.data.data,
-        nextStep,
-      };
-    } catch (error) {
-      return Promise.reject(error.message);
-    }
-  }
-);
-
 export const fetchAppointments = createAsyncThunk(
   'appointmentsSlice/fetchAppointments',
   async () => {
     try {
       const result = await appointmentAPI.getAll();
-      return result.data.data;
+      return result.data.data.list;
     } catch (error) {
       return Promise.reject(error.message);
     }

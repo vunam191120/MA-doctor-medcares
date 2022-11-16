@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children, roles }) => {
-  // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  // const currentDoctor = JSON.parse(localStorage.getItem('currentDoctor'));
 
   // Note logged in so redirect to login page
-  if (!Boolean(localStorage.getItem('currentUser'))) {
+  if (!Boolean(localStorage.getItem('currentDoctor'))) {
     return <Navigate to="/signin" replace={true} />;
   }
 

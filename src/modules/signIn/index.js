@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Row, Col, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { FaFacebookF, FaTwitter, FaGoogle } from 'react-icons/fa';
 
 import healthCareLogo from '../../assets/img/health-care-logo.png';
 import bannerLoginBg from '../../assets/img/banner-login-bg.png';
@@ -17,7 +16,7 @@ export default function SigninForm() {
   const isLoading = useSelector(selectUserIsLoading);
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem('currentUser'))) {
+    if (JSON.parse(localStorage.getItem('currentDoctor'))) {
       navigate('/');
     }
   }, [navigate]);

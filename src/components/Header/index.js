@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col, Row } from 'antd';
 import { BsClock } from 'react-icons/bs';
 import {
@@ -13,8 +13,20 @@ import { AiOutlineTwitter } from 'react-icons/ai';
 import Button from '../../components/Button';
 import { Link } from 'react-router-dom';
 import { isLogin } from '../../helpers/isLogin';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getIdentity,
+  selectUserNeedUpdate,
+} from '../../store/slices/usersSlice';
 
 export default function Header() {
+  const currentDoctor = useSelector(selectUserNeedUpdate);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getIdentity());
+  }, [dispatch]);
+
   return (
     <section className="header-container">
       <div className="header-content">
@@ -60,17 +72,18 @@ export default function Header() {
                 >
                   <img
                     className="avatar"
-                    src={`${
-                      JSON.parse(localStorage.getItem('currentUser')).avatar
-                    }`}
+                    src={
+                      Object.keys(currentDoctor).length > 0
+                        ? currentDoctor.avatar[0].url
+                        : ''
+                    }
                     alt="avatar"
                   />
-                  Hello,{' '}
-                  {JSON.parse(localStorage.getItem('currentUser')).full_name}
+                  Hello, {currentDoctor.full_name}
                 </Link>
                 <Button
                   onClick={() => {
-                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('currentDoctor');
                     localStorage.removeItem('accessToken');
                     window.location.href = '/signin';
                   }}

@@ -1,13 +1,17 @@
 import { Col, Row } from 'antd';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink, Outlet } from 'react-router-dom';
 import ScrollToTop from 'react-scroll-to-top';
 
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import { selectUserNeedUpdate } from '../../store/slices/usersSlice';
 import sidebarData from './sidebarData';
 
 export default function MyProfile() {
+  const currentDoctor = useSelector(selectUserNeedUpdate);
+
   return (
     <>
       <ScrollToTop smooth color="#6f00ff" />
@@ -21,11 +25,13 @@ export default function MyProfile() {
                   <img
                     className="avatar"
                     alt="avatar"
-                    src={`${
-                      JSON.parse(localStorage.getItem('currentUser')).avatar
-                    }`}
+                    src={
+                      Object.keys(currentDoctor).length > 0
+                        ? currentDoctor.avatar[0].url
+                        : ''
+                    }
                   />
-                  <h3 className="name">Vu Hai Nam</h3>
+                  <h3 className="name">{currentDoctor.full_name}</h3>
                   <h5 className="category">
                     BDS, MDS - Oral &amp; Maxillofacial Surgery
                   </h5>

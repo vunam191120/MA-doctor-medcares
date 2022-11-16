@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Tag from '../../../components/Tag';
 import {
   fetchAppointments,
-  selectAppointmentIsLoading,
+  // selectAppointmentIsLoading,
   selectAppointments,
 } from '../../../store/slices/appointmentsSlice';
 import {
@@ -12,16 +12,12 @@ import {
   selectClinics,
 } from '../../../store/slices/clinicsSlice';
 
-const AppointmentItem = ({ appointment, clinic }) => {
+const AppointmentItem = ({ appointment, clinic, patient }) => {
   return (
     <div className="appointment-item">
-      <img
-        src={appointment.doctor.avatar}
-        className="doctor-avatar"
-        alt="doctor-avt"
-      />
+      <img src={patient.avatar} className="doctor-avatar" alt="doctor-avt" />
       <div className="info">
-        <h3 className="doctor-name">{appointment.doctor.full_name}</h3>
+        <h3 className="doctor-name">{patient.full_name}</h3>
         <p className="appointment-date">
           <span className="date">
             {moment(appointment.date).format('DD-MM-YYYY')}
@@ -44,7 +40,7 @@ export default function AppointmentList() {
   const dispatch = useDispatch();
   const appointments = useSelector(selectAppointments);
   const clinics = useSelector(selectClinics);
-  const isLoading = useSelector(selectAppointmentIsLoading);
+  // const isLoading = useSelector(selectAppointmentIsLoading);
 
   useEffect(() => {
     dispatch(fetchAppointments());
@@ -58,14 +54,15 @@ export default function AppointmentList() {
 
   return (
     <div className="appointment-container">
-      {appointments.length > 0 ? (
+      {Object.keys(appointments).length > 0 ? (
         appointments.map((appointment, index) => {
           const clinic = clinics.find(
-            (item) => item.clinic_id === appointment.clinic_id
+            (item) => item.clinic_id === appointment.object.clinic_id
           );
           return (
             <AppointmentItem
-              appointment={appointment}
+              appointment={appointment.object}
+              patient={appointment.patient}
               key={index}
               clinic={clinic}
             />
