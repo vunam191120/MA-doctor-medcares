@@ -1,0 +1,28 @@
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .prev,
+  .next,
+  .button {
+    height: 46px;
+    width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    .icon {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: $fs-5;
+    }
+  }
+  .button.active {
+    border: 1px solid $color-blue-1;
+    background-color: $color-blue-1;
+    color: $color-white-0;
+    user-select: none;
+  }
+}

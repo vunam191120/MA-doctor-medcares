@@ -1,0 +1,45 @@
+.partner-container {
+  background-color: $color-blue-7;
+  padding: $pd-6 0;
+  .section-title {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto $mg-3 + 5;
+    .heading {
+      @include styleText($color-blue-1, $fs-3, $fw-0);
+    }
+    .title {
+      margin: $mg-4 0;
+      @include styleText($color-black-0, $fs-4 - 4, $fw-3);
+    }
+    .description {
+      margin-bottom: $mg-2 - 4;
+      line-height: $line-height-1;
+      @include styleText($color-gray-1, $fs-0 + 1, $fw-0);
+    }
+  }
+  .partner-content {
+    .partner-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      //   margin-left: ;
+      .partner-item {
+        transition: 0.5s ease;
+        flex: 0 0 20%;
+        max-width: 20%;
+        padding-bottom: $pd-4;
+        padding-left: $pd-2;
+        padding-right: $pd-2;
+        cursor: pointer;
+        .partner-img {
+          max-width: 100%;
+          height: auto;
+        }
+        &:hover {
+          transform: translateY(-10px);
+        }
+      }
+    }
+  }
+}

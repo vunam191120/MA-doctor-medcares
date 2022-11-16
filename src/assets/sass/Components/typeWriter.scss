@@ -1,0 +1,22 @@
+.type-writer-title {
+  @include styleText($color-blue-2, $fs-6 - 2, $fw-3);
+  text-transform: capitalize;
+
+  .type-cursor {
+    border-right: 2px solid #222;
+    animation: blinking 0.7s infinite;
+  }
+}
+
+@keyframes blinking {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

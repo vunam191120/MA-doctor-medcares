@@ -1,0 +1,24 @@
+// ----------- Ant design -----------
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+// ----------- Type Writer -----------
+.Typewriter__wrapper {
+  @include styleText($color-blue-2, $fs-6 - 2, $fw-3);
+  text-transform: capitalize;
+}
+
+.Typewriter__cursor {
+  font-weight: $fw-4;
+  font-size: $fs-6;
+}

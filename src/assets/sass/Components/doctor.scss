@@ -1,0 +1,93 @@
+// Doctor
+.doctor-container {
+  .doctor-content {
+    .section-title {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto $mg-3 + 5;
+      .heading {
+        @include styleText($color-blue-1, $fs-3, $fw-0);
+      }
+      .title {
+        margin: $mg-4 0;
+        @include styleText($color-black-0, $fs-4 - 4, $fw-3);
+      }
+      .description {
+        margin-bottom: $mg-2 - 4;
+        line-height: $line-height-1;
+        @include styleText($color-gray-1, $fs-0 + 1, $fw-0);
+      }
+    }
+    .doctor-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      .doctor-item {
+        .doctor-avatar {
+          transition: 0.5s;
+          border: 8px solid $color-white-0;
+          border-radius: $border-radius-3;
+          display: block;
+          width: 100%;
+        }
+        .content {
+          position: relative;
+          text-align: center;
+          padding-top: $pd-3;
+          transition: 0.5s ease;
+          max-width: 255px;
+          margin: 0 auto;
+          .name {
+            @include styleText($color-black-0, $fs-3, $fw-1);
+            margin-bottom: $mg-0;
+          }
+          .specialized {
+            @include styleText($color-blue-1, $fs-0, $fw-0);
+          }
+          .social-list {
+            opacity: 0;
+            visibility: hidden;
+            display: flex;
+            justify-content: center;
+            transition: 0.5s ease;
+            margin-top: -40px;
+            .social-item {
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: $color-blue-1;
+              margin-right: $mg-4;
+              transition: 0.5s ease;
+              cursor: pointer;
+              .icon {
+                @include styleText($color-white-0, $fs-0, $fw-0);
+              }
+              &:hover {
+                opacity: 0.6;
+              }
+            }
+          }
+        }
+        &:hover {
+          .doctor-avatar {
+            border: 8px solid $color-gray-4;
+          }
+          .content {
+            box-shadow: 0 2px 28px 0 rgb(0 0 0 / 9%);
+            background-color: $color-white-0;
+            padding: 20px;
+            margin: -70px auto 0;
+            .social-list {
+              margin-top: 15px;
+              opacity: 1;
+              visibility: visible;
+            }
+          }
+        }
+      }
+    }
+  }
+}

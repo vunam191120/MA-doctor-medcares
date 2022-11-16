@@ -1,0 +1,47 @@
+// Helpers
+@import './Helpers/variables.scss';
+@import './Helpers/mixin.scss';
+@import './Helpers/animation.scss';
+@import './Helpers/extend.scss';
+
+// Vendors
+@import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+
+// Base
+@import './Base/reset.scss';
+@import './Base/customize.scss';
+
+// Layouts
+
+// Components
+@import './Components/button.scss';
+@import './Components/header.scss';
+@import './Components/navigation.scss';
+@import './Components/footer.scss';
+@import './Components/typeWriter.scss';
+@import './Components/appointmentDetailsForm.scss';
+@import './Components/patientInformation.scss';
+@import './Components/appointmentInformation.scss';
+@import './Components/spinner.scss';
+@import './Components/modal.scss';
+@import './Components/tag.scss';
+@import './Components/doctor.scss';
+@import './Components/appointment.scss';
+@import './Components/aboutUs.scss';
+@import './Components/pagination.scss';
+@import './Components/pageHeader.scss';
+@import './Components/partner.scss';
+
+// Pages
+@import './Page/homepage.scss';
+@import './Page/clientBookAppointment.scss';
+@import './Page/contact.scss';
+@import './Page/signIn.scss';
+@import './Page/myProfile.scss';
+@import './Page/signUp.scss';
+@import './Page/verify.scss';
+@import './Page/article.scss';
+@import './Page/articleDetail.scss';
+@import './Page/about.scss';
+
+// Theme

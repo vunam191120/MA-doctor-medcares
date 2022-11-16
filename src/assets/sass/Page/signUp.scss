@@ -1,0 +1,125 @@
+.signup-container {
+  width: 100vw;
+  height: 100vh;
+  .left {
+    height: 100%;
+    position: relative;
+    background-image: url(../../img/login-bg.jpeg);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    .logo-container {
+      padding: $pd-4 0 0 $pd-6;
+      @extend %logo-container;
+    }
+    .banner-container {
+      background-image: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .banner-bg {
+        position: relative;
+        width: 500px;
+        height: 506px;
+        border-radius: $border-radius-5;
+        .left,
+        .right {
+          height: 100%;
+          width: 50%;
+          display: inline-block;
+          background: rgb(10, 95, 218);
+          background: linear-gradient(
+            0deg,
+            rgba(10, 95, 218, 1) 0%,
+            rgba(251, 233, 235, 1) 100%
+          );
+          border-top-left-radius: $border-radius-5;
+          border-bottom-left-radius: $border-radius-5;
+        }
+        .right {
+          background: rgb(10, 95, 218);
+          background: linear-gradient(
+            180deg,
+            rgba(10, 95, 218, 1) 0%,
+            rgba(251, 233, 235, 1) 100%
+          );
+          border-top-right-radius: $border-radius-5;
+          border-bottom-right-radius: $border-radius-5;
+        }
+
+        .banner-img {
+          position: absolute;
+          height: 120%;
+          width: 100%;
+          left: 20px;
+          top: -20%;
+        }
+      }
+    }
+  }
+  .right {
+    background-color: $color-bg;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    .form-container {
+      padding: 0 $pd-5;
+      .ant-form-item {
+        margin-bottom: $mg-4;
+      }
+      .left-signup {
+        padding-right: $pd-1;
+      }
+      .title {
+        @include styleText($color-blue-2, $fs-4, $fw-2);
+        margin-bottom: $mg-2;
+        white-space: nowrap;
+      }
+      .sub-title {
+        @include styleText($color-black-0, $fs-3, $fw-0);
+        margin-bottom: $mg-2;
+      }
+      .form-input-group {
+        .input {
+          padding: $pd-1;
+          border-radius: $border-radius-4;
+        }
+        .button {
+          margin: $mg-1 auto 0;
+          width: 40%;
+          padding: $pd-1 - 1 0;
+          justify-content: center;
+        }
+      }
+
+      .signin-text {
+        margin-top: $mg-3;
+        text-align: center;
+        cursor: pointer;
+        @include styleText($color-brown-1, $fs-0 + 2, $fw-0);
+        .signin-link {
+          position: relative;
+          transition: 0.5s ease;
+          @include styleText($color-blue-1, $fs-0 + 2, $fw-0);
+          &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 0px;
+            height: 1px;
+            display: block;
+            background: $color-blue-1;
+            transition: 300ms;
+          }
+          &:hover {
+            @include styleText($color-blue-1, $fs-0 + 2, $fw-0);
+          }
+          &:hover::after {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

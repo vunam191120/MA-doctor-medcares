@@ -1,0 +1,145 @@
+.modal__overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // background-color: ($color: $color-black-0, $alpha: 0.6);
+  background-color: rgba($color: $color-black-0, $alpha: 0.6);
+  z-index: 999;
+  &.active {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  .content {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: $border-radius-3;
+    position: absolute;
+    background-color: $color-white-0;
+    top: 50%;
+    left: 50%;
+    max-width: 500px;
+    // max-height: 80vh;
+    transform: translate(-50%, -50%);
+    padding: 0 $pd-4 $pd-4;
+    animation: loadingDetail 0.4s ease;
+    z-index: 40;
+    .close-btn {
+      padding: 1rem;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      cursor: pointer;
+      .close-icon {
+        @include styleText($color-gray-0, $fs-5, $fw-0);
+        transition: 0.25s ease;
+        &:hover {
+          color: $color-black-0;
+          transform: translateY(-3px);
+        }
+      }
+    }
+
+    // Content for preview
+    &.content-preview {
+      padding: 0;
+      .title {
+        padding: $pd-1 $pd-3 + 4;
+        @include styleText($color-brown-1, $fs-0, $fw-1);
+        border-bottom: 1px solid rgba($color: $color-black-0, $alpha: 0.06);
+        margin-bottom: 0;
+      }
+      .modal-image {
+        padding: $pd-3;
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+
+    // Content for confirm
+    &.content--confirm {
+      text-align: center;
+      height: fit-content;
+      padding: $pd-4;
+      .icon-title {
+        text-align: center;
+        font-size: $fs-6 + 10;
+        margin-bottom: $mg-4;
+      }
+      .icon-title--delete {
+        color: $color-red-0;
+      }
+      .message {
+        @include styleText($color-brown-1, $fs-5, $fw-1);
+      }
+      .object {
+        margin-bottom: $mg-2;
+        @include styleText($color-black-0, $fs-3, $fw-0);
+      }
+      .btn-container {
+        .btn {
+          &:first-child {
+            margin-right: $mg-1;
+          }
+        }
+      }
+    }
+
+    // Content for forgot password
+    &.content--forgot {
+      padding: 0 $pd-5 $pd-2 $pd-5;
+      border-radius: 10px;
+      text-align: center;
+      .title {
+        @include styleText($color-brown-1, $fs-5, $fw-0);
+        padding-top: $pd-1;
+      }
+      .icon-title {
+        width: 150px;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        @include styleText($color-blue-0, $fs-7, $fw-0);
+        background-color: $color-brown-0;
+        border-radius: 50%;
+      }
+      .message {
+        margin-top: $mg-1;
+      }
+      .button-container {
+        margin-top: $mg-3;
+        display: flex;
+        justify-content: center;
+        .button--main {
+          display: block;
+          min-width: 200px;
+          margin: 0;
+        }
+      }
+    }
+
+    // Responsive
+    @include responsive('small') {
+      & {
+        // max-width: 400px;
+      }
+    }
+  }
+}
+
+// Test animation for loading detail
+@keyframes loadingDetail {
+  0% {
+    top: 35%;
+  }
+  100% {
+    top: 50%;
+  }
+}

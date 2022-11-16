@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import NoMatch from './pages/noMatch';
+import SignIn from './pages/signIn';
+import PrivateRoute from './routes/PrivateRoute';
+import appRoutes from './routes/routes';
 
 function App() {
+  const renderRoutes = (routes) =>
+    routes.map((route, index) => (
+      <Route
+        key={index}
+        path={route.path}
+        element={<PrivateRoute>{route.element}</PrivateRoute>}
+      >
+        {route.subnavs &&
+          route.subnavs.map((subRoute, index) => (
+            <Route
+              key={index}
+              path={subRoute.path}
+              element={
+                <PrivateRoute roles={subRoute.roles}>
+                  {subRoute.element}
+                </PrivateRoute>
+              }
+            ></Route>
+          ))}
+      </Route>
+    ));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route index path="signin" element={<SignIn />}></Route>
+        {renderRoutes(appRoutes)}
+        <Route path="*" element={<NoMatch />}></Route>
+      </Routes>
+    </>
   );
 }
 

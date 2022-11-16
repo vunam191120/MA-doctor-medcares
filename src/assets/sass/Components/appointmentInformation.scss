@@ -1,0 +1,23 @@
+.appointment-information-container {
+  .title {
+    margin-bottom: $mg-0;
+    @include styleText($color-blue-2, $fs-3, $fw-2);
+  }
+  .info {
+    .left {
+      display: inline-block;
+      width: 225px;
+      @include styleText($color-black-0, $fs-0, $fw-0);
+    }
+    .right {
+      display: inline-block;
+      width: calc(100% - 225px);
+      @include styleText($color-black-0, $fs-0, $fw-0);
+    }
+  }
+  .booking-service,
+  .booking-customer,
+  .booking-doctor {
+    margin-bottom: $mg-1;
+  }
+}

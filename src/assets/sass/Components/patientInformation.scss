@@ -1,0 +1,30 @@
+.information__container {
+  .left {
+    padding-right: $pd-4 - 5;
+    .form-input-group {
+      @extend %form-input-group;
+      .textarea {
+        resize: none;
+      }
+    }
+    .container-wrap {
+      display: flex;
+      align-items: center;
+      //   justify-content: space-between;
+      .date {
+        flex: 1;
+        .ant-picker {
+          width: 90%;
+        }
+      }
+    }
+  }
+  .right {
+    .ant-input-textarea {
+      .ant-input {
+        resize: none;
+        border-radius: $border-radius-3;
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+.profile-content {
+  min-height: 200px;
+  padding: $pd-4 0;
+  .left {
+    padding-right: $pd-4 - 5;
+    .sidebar-container {
+      border: 1px solid $color-line-0;
+      border-radius: $border-radius-2;
+      .sidebar-header {
+        padding: $pd-3;
+        text-align: center;
+        .avatar {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          margin-bottom: $mg-4 + 5;
+        }
+        .name {
+          margin-bottom: $mg-4;
+          @include styleText($color-black-0, $fs-3, $fw-1);
+        }
+        .category {
+          @include styleText($color-brown-1, $fs-1, $fw-0);
+          margin-bottom: $mg-4;
+          white-space: nowrap;
+        }
+      }
+      .sidebar-list {
+        .sidebar-item {
+          width: 100%;
+          border-top: 1px solid $color-line-0;
+          display: block;
+          padding: $pd-1 + 1 $pd-3;
+          .sidebar-link {
+            display: flex;
+            @include styleText($color-smoke, $fs-0 + 1, $fw-0);
+            align-items: center;
+            transition: 0.5s ease;
+            .icon {
+              margin-right: $mg-4;
+              font-size: $fs-3;
+            }
+            &:hover,
+            &.active {
+              color: $color-blue-1;
+            }
+          }
+        }
+      }
+    }
+  }
+  .right {
+    // UserForm
+    .userform-container {
+      padding: $pd-1 $pd-3 + 5;
+      border: 1px solid $color-line-0;
+      border-radius: $border-radius-2;
+      .form-input-group {
+        @extend %form-input-group;
+        .input-radio {
+          padding: $pd-1 - 2 0;
+        }
+      }
+      .button {
+        margin: $mg-3 auto 0;
+        padding: $pd-0 $pd-4;
+      }
+    }
+
+    // ChangePassowrdForm
+    .changePassword-form-container {
+      padding: $pd-1 $pd-3 + 5;
+      border: 1px solid $color-line-0;
+      border-radius: $border-radius-2;
+      .form-input-group {
+        @extend %form-input-group;
+        .input {
+          padding-top: $pd-0;
+          padding-bottom: $pd-0;
+        }
+      }
+      .button {
+        padding: $pd-0 $pd-4;
+      }
+    }
+
+    // Appointments
+    .appointment-container {
+      background: none;
+      .appointment-item {
+        margin-bottom: $mg-2;
+        background-color: $color-white-0;
+        border: 1px solid $color-line-0;
+        border-radius: $border-radius-2;
+        display: flex;
+        margin-bottom: $mg-2;
+        padding: $pd-3;
+        justify-content: space-between;
+        .doctor-avatar {
+          display: inline-block;
+          width: 120px;
+          height: 120px;
+          border-radius: $border-radius-2;
+          margin-right: $mg-2;
+        }
+        .info {
+          text-align: right;
+          .doctor-name {
+            @include styleText($color-black-0, $fs-3, $fw-2);
+            margin-bottom: $mg-0;
+          }
+          .status {
+            margin-top: $mg-4;
+          }
+        }
+      }
+    }
+
+    // Payments
+  }
+}

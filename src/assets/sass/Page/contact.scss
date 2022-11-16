@@ -1,0 +1,89 @@
+.title-page {
+  background-image: url(../../img/feature-item-bg.jpeg);
+}
+
+.contact-container {
+  padding: $pd-6 0;
+  .contact-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    .contact-item {
+      padding: $pd-4 + 3 0;
+      text-align: center;
+      box-shadow: 0 2px 48px 0 rgb(0 0 0 / 8%);
+      transition: 0.5s ease;
+      background-color: $color-white-0;
+      .icon-container {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        margin: 0 auto;
+        background-color: $color-blue-4;
+        margin-bottom: $mg-4 + 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon {
+          @include styleText($color-blue-1, $fs-4 - 6, $fw-0);
+        }
+      }
+      .title {
+        @include styleText($color-black-0, $fs-3, $fw-3);
+        margin-bottom: $mg-2;
+      }
+      .link {
+        @include styleText($color-black-0, $fs-0, $fw-0);
+      }
+      &:hover {
+        transform: translateY(-10px);
+        .icon-container {
+          background-color: $color-blue-1;
+          .icon {
+            color: $color-white-0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.form-container {
+  .form-title {
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+    h2 {
+      @include styleText($color-blue-1, $fs-5, $fw-0);
+    }
+    h3 {
+      margin: $mg-4 0;
+      text-transform: capitalize;
+      @include styleText($color-black-0, $fs-4, $fw-2);
+    }
+    p {
+      line-height: $line-height-1;
+      @include styleText($color-gray-0, $fs-0, $fw-0);
+      margin-bottom: $mg-3;
+    }
+  }
+  .form-content {
+    margin-bottom: $mg-3;
+    .left {
+      padding-right: $pd-3;
+    }
+    .form-input-group {
+      @extend %form-input-group;
+      .ant-input-textarea {
+        .ant-input {
+          resize: none;
+          border-radius: $border-radius-3;
+        }
+      }
+    }
+    .button {
+      padding: $pd-0 $pd-4;
+      margin: 0 auto $mg-2;
+    }
+  }
+}

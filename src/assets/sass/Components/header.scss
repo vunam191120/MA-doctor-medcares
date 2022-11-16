@@ -1,0 +1,74 @@
+.header-container {
+  .header-content {
+    background-color: $color-blue-2;
+    padding: $pd-3 0;
+    .left {
+      display: flex;
+      .info-item {
+        display: flex;
+        align-items: center;
+        margin-right: $mg-2;
+        @include styleText($color-white-0, $fs-0 - 1, $fw-0);
+        .icon-container {
+          margin-right: $mg-4;
+          width: 25px;
+          height: 25px;
+          background-color: $color-white-0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          .icon {
+            @include styleText($color-black-0, $fs-1, $fw-0);
+          }
+        }
+      }
+    }
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      .socials {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        transition: 0.25s ease;
+        margin-right: $mg-4 + 5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background-color: $color-white-0;
+        &.facebook {
+          @include styleText($color-facebook, $fs-1, $fw-0);
+        }
+        &.twitter {
+          @include styleText($color-twitter, $fs-1, $fw-0);
+        }
+        &.pinterest {
+          @include styleText($color-pinterest, $fs-1, $fw-0);
+        }
+        &.instagram {
+          @include styleText($color-instagram, $fs-1, $fw-0);
+        }
+        &:hover {
+          @include styleText($color-white-0, $fs-0, $fw-0);
+          background-color: $color-blue-1;
+        }
+      }
+      .profile-btn {
+        .avatar {
+          height: 30px;
+          width: 30px;
+          border-radius: 50%;
+          display: inline-block;
+          margin-right: $mg-4;
+        }
+        @include styleText($color-blue-2, $fs-0, $fw-0);
+        &:hover {
+          @include styleText($color-white-1, $fs-0, $fw-0);
+        }
+      }
+    }
+  }
+}

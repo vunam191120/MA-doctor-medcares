@@ -1,0 +1,44 @@
+.title-page {
+  @extend %title-page;
+}
+
+.client-book-appointment-container {
+  .form-appointment-container {
+    background-color: $color-gray-7;
+    .wrap {
+      padding: $pd-6 0;
+      .content {
+        background: $color-white-0;
+        border-radius: $border-radius-3;
+        box-shadow: rgba($color: $color-black-0, $alpha: 0.35) 0px 5px 15px;
+        // Steps header
+        .steps-header {
+          padding: $pd-1 $pd-4;
+          border-bottom: 1px solid $color-line-1;
+        }
+
+        // Steps content
+        .steps-content {
+          padding: $pd-1 $pd-4;
+        }
+
+        // Steps button
+        .steps-button {
+          border-top: 1px solid #f0f0f0;
+          padding: $pd-3 0;
+          display: flex;
+          justify-content: center;
+          .button {
+            width: 220px;
+            height: 48px;
+            text-align: center;
+            display: inline-block;
+            &.submit {
+              width: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+}

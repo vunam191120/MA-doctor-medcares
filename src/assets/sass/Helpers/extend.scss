@@ -1,0 +1,100 @@
+// .backgroundImage {
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+// }
+
+// Placeholder
+%backgroundImage {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+%centerFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%form-input-group {
+  // .form-input-group {
+  position: relative;
+  display: block;
+  .input {
+    padding: $pd-1 $pd-3;
+    border-radius: $border-radius-3;
+    height: 100%;
+    box-shadow: none;
+  }
+
+  .ant-select-selector {
+    padding: $pd-0 - 1 $pd-3;
+    border-radius: $border-radius-3;
+    height: 100%;
+    box-shadow: none;
+    .ant-select-selection-placeholder {
+      text-align: left;
+    }
+  }
+  .ant-select-arrow {
+    @include styleText($color-blue-2, $fs-0, $fw-0);
+  }
+
+  .icon {
+    position: relative;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    @include styleText($color-blue-2, $fs-3, $fw-0);
+  }
+}
+
+%overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color: $color-black-0, $alpha: 0.7);
+}
+
+%title-page {
+  height: 400px;
+  position: relative;
+  margin-top: 82px;
+  background-image: url('../../img/book-appoinment-bg.jpeg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($color: $color-black-0, $alpha: 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .title {
+      @include styleText($color-white-0, $fs-6, $fw-2);
+    }
+  }
+}
+
+%logo-container {
+  display: flex;
+  align-items: center;
+  .logo-img {
+    width: 46px;
+    height: 46px;
+    display: inline-block;
+    margin-right: $mg-0;
+  }
+  .logo-text {
+    display: inline-block;
+    @include styleText($color-blue-2, $fs-4 - 6, $fw-0);
+  }
+}

@@ -1,0 +1,115 @@
+// Appointment
+.appointment-container {
+  background-image: url(../../img/appointment-bg.jpeg);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  .appointment-content {
+    .left {
+      padding: $pd-1;
+      .info-list {
+        display: grid;
+        // grid-template-columns: repeat(2, 1fr);   comment when disabled appointment form from homepage
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        .info-item {
+          text-align: center;
+          padding: $pd-5 $pd-4 - 5;
+          border-radius: $border-radius-3;
+          transition: 0.5s ease;
+          background-color: $color-white-0;
+          .info-num-container {
+            @include styleText($color-blue-1, $fs-4, $fw-2);
+            .num {
+              letter-spacing: 1.8px;
+            }
+            .icon {
+              margin-left: $mg-0;
+            }
+          }
+          .text {
+            @include styleText($color-black-0, $fs-3, $fw-2);
+          }
+        }
+      }
+    }
+    .right {
+      padding: 0 $pd-1;
+      .appointment-form {
+        background-color: #ffffff;
+        padding: 50px 40px;
+        border-radius: 2px;
+        position: relative;
+        display: block;
+        text-align: center;
+        .heading {
+          @include styleText($color-blue-1, $fs-3, $fw-0);
+        }
+        .title {
+          margin: $mg-4 0 $mg-3;
+          @include styleText($color-black-0, $fs-5 + 4, $fw-3);
+        }
+        .form-group {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px 32px;
+          .form-input-group {
+            position: relative;
+            margin-bottom: 0;
+            .input {
+              box-shadow: none;
+              outline: none;
+              padding: $pd-1 $pd-3;
+              border-radius: $border-radius-4;
+              background-color: $color-gray-5;
+              &:focus {
+                outline: none;
+              }
+            }
+            .icon {
+              position: absolute;
+              right: 20px;
+              top: 50%;
+              transform: translateY(-50%);
+              @include styleText($color-blue-1, $fs-3, $fw-0);
+            }
+            // Select component antd
+            .ant-select-selector {
+              padding: $pd-0 + 2 $pd-3;
+              border-radius: $border-radius-4;
+              background-color: $color-gray-5;
+              height: fit-content;
+              box-shadow: none;
+              .ant-select-selection-placeholder {
+                text-align: left;
+              }
+            }
+            .ant-select-arrow {
+              @include styleText($color-blue-1, $fs-0, $fw-0);
+              right: 20px;
+            }
+
+            // Datepicker component antd
+            .ant-picker {
+              width: 100%;
+              padding: $pd-1 $pd-3;
+              box-shadow: none;
+              border-radius: $border-radius-4;
+              background-color: $color-gray-5;
+              .ant-picker-suffix {
+                @include styleText($color-blue-1, $fs-0, $fw-0);
+              }
+            }
+          }
+        }
+        .ant-form-item {
+          margin-bottom: 0;
+          .button {
+            margin: $mg-1 auto 0;
+          }
+        }
+      }
+    }
+  }
+}

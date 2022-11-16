@@ -1,0 +1,40 @@
+.verify-container {
+  .verify-content {
+    padding: $pd-6 0;
+    text-align: center;
+    width: 70%;
+    margin: 0 auto;
+    .title {
+      @include styleText($color-black-0, $fs-4, $fw-0);
+      margin-bottom: $mg-2;
+      .app-name {
+        display: inline-block;
+        transition: 0.5s ease;
+        &:hover {
+          transform: translateY(-4px);
+        }
+      }
+    }
+    .description {
+      @include styleText($color-black-0, $fs-0, $fw-0);
+      line-height: $line-height-1;
+      margin-bottom: $mg-3;
+    }
+    .verifyForm {
+      width: 50%;
+      margin: 0 auto;
+      .form-input-group {
+        @extend %form-input-group;
+      }
+      .form-verify-button {
+        display: flex;
+        justify-content: space-between;
+        .button {
+          padding: $pd-0 $pd-4;
+          line-height: $line-height-0;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
