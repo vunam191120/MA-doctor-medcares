@@ -24,3 +24,7 @@ export const STATUS_SUPPORT = [
 ];
 
 export const STATUS_APPOINTMENT = ['received', 'cancled', 'done'];
+
+export const STATUS_MEDICAL_RECORD = ['in progress', 'canceled', 'done'];
+
+export const FILE_TYPES = ['jpg', 'jpeg', 'png', 'pdf', 'docx'];

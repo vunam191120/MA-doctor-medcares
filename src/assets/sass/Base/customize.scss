@@ -12,6 +12,57 @@ ul {
   padding: 0;
 }
 
+// Antd table
+.ant-table-wrapper {
+  border: 1px solid $color-line-0;
+  border-radius: $border-radius-2;
+
+  .ant-table-content {
+    border-radius: 10px;
+    .ant-table-thead {
+      .ant-table-cell {
+        @include styleText($color-white-0, $fs-0, $fw-1);
+      }
+    }
+  }
+}
+
+thead[class*='ant-table-thead'] th {
+  background-color: rgba($color: $color-blue-2, $alpha: 1);
+}
+
+.ant-table-wrapper {
+  &.detail-table {
+    margin-top: $mg-1;
+    border-radius: 0;
+  }
+  .ant-table-content {
+    border-radius: 0;
+  }
+}
+
+// Input disabled
+.input-detail--category,
+.input-custom-disabled,
+.input-detail {
+  &:disabled {
+    background: none;
+    border: none;
+    color: $color-black-0;
+  }
+  & > textarea:disabled {
+    background: none;
+    border: none;
+    color: $color-black-0;
+  }
+}
+
+.ant-input-number-disabled {
+  background: none;
+  border: none;
+  color: $color-black-0;
+}
+
 // ----------- Type Writer -----------
 .Typewriter__wrapper {
   @include styleText($color-blue-2, $fs-6 - 2, $fw-3);

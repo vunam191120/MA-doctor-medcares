@@ -38,11 +38,37 @@ export const fetchCategoriesByClinic = createAsyncThunk(
   }
 );
 
+export const fetchPatients = createAsyncThunk(
+  'clinicsSlice/fetchPatients',
+  async () => {
+    try {
+      const result = await clinicAPI.getPatients();
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
+export const fetchClinicByDoctor = createAsyncThunk(
+  'clinicsSlice/fetchClinicByDoctor',
+  async (doctor_id) => {
+    try {
+      const result = await clinicAPI.getClinicByDoctor(doctor_id);
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
 // Reducer
 const clinicsSlice = createSlice({
   name: 'clinicsSlice',
   initialState: {
     clinics: [],
+    patients: [],
+    clinicByDoctor: {},
     doctorsByClinic: [],
     categoriesByClinic: [],
     isLoading: false,
@@ -61,7 +87,7 @@ const clinicsSlice = createSlice({
       state.hasError = false;
     },
     [fetchClinics.rejected]: (state, action) => {
-      message.err(action.error.message, 3);
+      message.error(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;
     },
@@ -76,7 +102,7 @@ const clinicsSlice = createSlice({
       state.hasError = false;
     },
     [fetchCategoriesByClinic.rejected]: (state, action) => {
-      message.err(action.error.message, 3);
+      message.error(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;
     },
@@ -91,7 +117,37 @@ const clinicsSlice = createSlice({
       state.hasError = false;
     },
     [fetchDoctorsClinic.rejected]: (state, action) => {
-      message.err(action.error.message, 3);
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Fetch clinic by doctor
+    [fetchClinicByDoctor.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchClinicByDoctor.fulfilled]: (state, action) => {
+      state.clinicByDoctor = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchClinicByDoctor.rejected]: (state, action) => {
+      message.error(action.payload.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Fetch patients
+    [fetchPatients.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [fetchPatients.fulfilled]: (state, action) => {
+      state.patients = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [fetchPatients.rejected]: (state, action) => {
+      message.error(action.payload.message, 3);
       state.isLoading = false;
       state.hasError = true;
     },
@@ -100,6 +156,10 @@ const clinicsSlice = createSlice({
 
 // Selector
 export const selectClinics = (state) => state.clinics.clinics;
+
+export const selectClinicByDoctor = (state) => state.clinics.clinicByDoctor;
+
+export const selectPatients = (state) => state.clinics.patients;
 
 export const selectDoctorByClinic = (state) => state.clinics.doctorsByClinic;
 

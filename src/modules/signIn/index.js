@@ -18,7 +18,7 @@ export default function SigninForm() {
 
   useEffect(() => {
     if (isLogin()) {
-      return navigate(-1);
+      return navigate('/profile/user-form');
     }
   }, [navigate]);
 

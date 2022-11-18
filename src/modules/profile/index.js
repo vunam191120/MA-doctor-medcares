@@ -16,7 +16,7 @@ export default function MyProfile() {
     <>
       <ScrollToTop smooth color="#6f00ff" />
       <Header />
-      <div className="profile-container mg-header">
+      <div className="profile-container">
         <div className="container-fluid profile-content">
           <Row>
             <Col className="left" sm={24} md={24} lg={6} xl={6} xxl={6}>
@@ -31,7 +31,7 @@ export default function MyProfile() {
                         : ''
                     }
                   />
-                  <h3 className="name">{currentDoctor.full_name}</h3>
+                  <h3 className="name">Dr. {currentDoctor.full_name}</h3>
                   <h5 className="category">
                     BDS, MDS - Oral &amp; Maxillofacial Surgery
                   </h5>
