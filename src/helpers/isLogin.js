@@ -1,1 +1,1 @@
-export const isLogin = () => !!window.localStorage.getItem('accessToken');
+export const isLogin = () => localStorage.getItem('accessToken');

@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import NoMatch from './pages/noMatch';
 import SignIn from './pages/signIn';
 import PrivateRoute from './routes/PrivateRoute';
@@ -30,7 +30,11 @@ function App() {
   return (
     <>
       <Routes>
-        <Route index path="signin" element={<SignIn />}></Route>
+        <Route
+          path="/"
+          element={<Navigate to="/signin" replace={true} />}
+        ></Route>
+        <Route index path="/signin" element={<SignIn />}></Route>
         {renderRoutes(appRoutes)}
         <Route path="*" element={<NoMatch />}></Route>
       </Routes>

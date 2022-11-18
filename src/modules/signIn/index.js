@@ -8,6 +8,7 @@ import bannerLoginBg from '../../assets/img/banner-login-bg.png';
 import Button from '../../components/Button';
 import Spinner from '../../components/Spinner';
 import { selectUserIsLoading, signIn } from '../../store/slices/usersSlice';
+import { isLogin } from '../../helpers/isLogin';
 
 export default function SigninForm() {
   const [form] = Form.useForm();
@@ -16,8 +17,8 @@ export default function SigninForm() {
   const isLoading = useSelector(selectUserIsLoading);
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem('currentDoctor'))) {
-      navigate('/');
+    if (isLogin()) {
+      return navigate(-1);
     }
   }, [navigate]);
 
