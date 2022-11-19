@@ -23,7 +23,7 @@
     top: 50%;
     left: 50%;
     max-width: 500px;
-    // max-height: 80vh;
+    max-height: 80vh;
     transform: translate(-50%, -50%);
     padding: 0 $pd-4 $pd-4;
     animation: loadingDetail 0.4s ease;
@@ -66,6 +66,10 @@
       text-align: center;
       height: fit-content;
       padding: $pd-4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      // max-height: 80vh;
       .icon-title {
         text-align: center;
         font-size: $fs-6 + 10;
@@ -80,9 +84,19 @@
       .object {
         margin-bottom: $mg-2;
         @include styleText($color-black-0, $fs-3, $fw-0);
+        display: block;
+        flex: 1 1 auto;
+        overflow: hidden;
+        .img {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
       }
       .btn-container {
-        .btn {
+        display: flex;
+        justify-content: space-evenly;
+        .button {
           &:first-child {
             margin-right: $mg-1;
           }
@@ -141,5 +155,11 @@
   }
   100% {
     top: 50%;
+  }
+}
+
+.button--container--product {
+  .button {
+    padding: $pd-2 $pd-3;
   }
 }

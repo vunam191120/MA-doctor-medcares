@@ -42,11 +42,11 @@ export default function MedicalRecord() {
       key: 'patient_name',
       dataIndex: 'patient_name',
     },
-    {
-      title: 'Address',
-      key: 'patient_address',
-      dataIndex: 'patient_address',
-    },
+    // {
+    //   title: 'Address',
+    //   key: 'patient_address',
+    //   dataIndex: 'patient_address',
+    // },
     {
       title: 'Created date',
       key: 'created date',
@@ -64,14 +64,14 @@ export default function MedicalRecord() {
         <div className="button-containers">
           <Link
             to={`detail/${record.record_id}`}
-            className="button button--blue--light"
+            className="button button--blue--light square"
           >
             <ImEye className="icon" />
             <span>View</span>
           </Link>
           <Link
             to={`update/${record.record_id}`}
-            className="button button--light"
+            className="button button--light square"
           >
             <HiPencil className="icon" />
             <span>Update</span>
@@ -100,7 +100,7 @@ export default function MedicalRecord() {
         }}
         columns={medicalRecordColumns}
         dataSource={medicalRecords}
-        rowKeys={(record) => record.report_id}
+        rowKey={(record) => record.record_id}
       />
     </div>
   );

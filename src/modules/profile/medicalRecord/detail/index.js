@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Image, Table } from 'antd';
+
 import {
   fetchMedicalRecord,
   selectMedicalRecordIsLoading,
   selectMedicalRecordNeedUpdate,
 } from '../../../../store/slices/medicalRecordsSlice';
+import Spinner from '../../../../components/Spinner';
+import Button from '../../../../components/Button';
 
 export default function MedicalRecordDetail() {
   const { record_id } = useParams();
@@ -18,38 +22,109 @@ export default function MedicalRecordDetail() {
     dispatch(fetchMedicalRecord(record_id));
   }, [dispatch, record_id]);
 
+  const productColumns = [
+    {
+      title: 'Product Name',
+      key: 'product_name',
+      dataIndex: 'product_name',
+    },
+    {
+      title: 'Quantity',
+      key: 'quantity',
+      dataIndex: 'quantity',
+    },
+    {
+      title: 'Description',
+      key: 'description',
+      dataIndex: 'description',
+    },
+  ];
+
   return (
     <>
-      {/* Medical Record Detail */}
-      <div className="medical-detail-container info-list">
-        <h3 className="title">Medical Record Information</h3>
-        <div className="info-list">
-          <div className="info-item">
-            <span className="info-title">Patient Name: </span>
-            <span className="info-text">{medical_record.patient_name}</span>
+      {Object.keys(medicalRecordNeedUpdate).length > 0 ? (
+        <>
+          {/* Medical Record Detail */}
+          <div className="medical-detail-container info-list">
+            <div className="title-container">
+              <h3 className="title">Medical Record Information</h3>
+            </div>
+            <div className="info-list">
+              <div className="info-item">
+                <span className="info-title">Patient Name: </span>
+                <span className="info-text">{medical_record.patient_name}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-title">Email: </span>
+                <span className="info-text">{medical_record.email}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-title">Age: </span>
+                <span className="info-text">{medical_record.age}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-title">Address: </span>
+                <span className="info-text">
+                  {medical_record.patient_address}
+                </span>
+              </div>
+              <div className="info-item">
+                <span className="info-title">Diagnose: </span>
+                <span className="info-text">{medical_record.diagnose}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-title">Disease Progression: </span>
+                <span className="info-text">
+                  {medical_record.disease_progression}
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="info-item">
-            <span className="info-title">Address: </span>
-            <span className="info-text">{medical_record.patient_address}</span>
+
+          {/* Document */}
+          <div className="medical-detail-container document-list">
+            <div className="title-container">
+              <h3 className="title">Documents</h3>
+              <Button className="button button--blue--light">
+                <span>Download All</span>
+              </Button>
+            </div>
+            <Image.PreviewGroup className="document-list">
+              {images.map((item, index) => (
+                <Image width={200} key={index} src={item.url} />
+              ))}
+            </Image.PreviewGroup>
           </div>
-          <div className="info-item">
-            <span className="info-title">Diagnose: </span>
-            <span className="info-text">{medical_record.diagnose}</span>
+
+          <div className="medical-detail-container prescription-list">
+            <div className="title-container">
+              <h3 className="title">Prescription</h3>
+            </div>
+            {/* Prescription */}
+            <div className="prescription">
+              <Table
+                className="medical-record-table"
+                x={true}
+                loading={isLoading}
+                scroll={{ x: 300 }}
+                pagination={{
+                  position: ['bottomCenter'],
+                }}
+                columns={productColumns}
+                dataSource={prescriptions}
+                rowKey={(record) => record.prescription_id}
+              />
+            </div>
           </div>
+        </>
+      ) : (
+        <div className="medical-detail-container loading">
+          <Spinner />
+          <p style={{ marginBottom: 40 }} className="text-loading">
+            Loading ...
+          </p>
         </div>
-      </div>
-
-      {/* Document */}
-      <div className="medical-detail-container document-list">
-        <h3 className="title">Documents</h3>
-        <div className="document-list"></div>
-      </div>
-
-      <div className="medical-detail-container prescription-list">
-        <h3 className="title">Prescription</h3>
-        {/* Prescription */}
-        <div className="prescription"></div>
-      </div>
+      )}
     </>
   );
 }

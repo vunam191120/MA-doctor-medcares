@@ -75,6 +75,19 @@
     border: none;
   }
 
+  &.button--text--delete {
+    // margin-left: $mg-4;
+    border: none;
+    background: none;
+    color: $color-red-0;
+    .icon {
+      margin-right: $mg-0;
+    }
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
   .icon {
     margin-left: $mg-4;
   }

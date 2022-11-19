@@ -13,7 +13,7 @@ export default function Tag({ status }) {
       case 'done' || 'Done':
         setStatusTag('tag--done');
         break;
-      case 'inprogress' || 'Inprogress':
+      case 'in progress' || 'In progress':
         setStatusTag('tag--inprogress');
         break;
       case 'isBlocking' || 'IsBlocking':

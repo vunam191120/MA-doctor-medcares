@@ -15,6 +15,20 @@ const medicalRecordAPI = {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
+  update(newMedicalRecord) {
+    const url = `/patient/record/patient`;
+    return axiosClient.put(url, newMedicalRecord, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  deleteDocument(document_id) {
+    const url = `/patient/record/document/${document_id}`;
+    return axiosClient.delete(url);
+  },
+  deletePrescription(prescription_id) {
+    const url = `/patient/record/prescription/${prescription_id}`;
+    return axiosClient.delete(url);
+  },
 };
 
 export default medicalRecordAPI;

@@ -15,9 +15,19 @@ import {
 const AppointmentItem = ({ appointment, clinic, patient }) => {
   return (
     <div className="appointment-item">
-      <img src={patient.avatar} className="doctor-avatar" alt="doctor-avt" />
+      <img
+        src={
+          patient
+            ? patient.avatar
+            : 'https://healthcare-greenwich.s3.ap-northeast-1.amazonaws.com/male.jpg'
+        }
+        className="doctor-avatar"
+        alt="doctor-avt"
+      />
       <div className="info">
-        <h3 className="doctor-name">{patient.full_name}</h3>
+        <h3 className="doctor-name">
+          {patient ? patient.full_name : appointment.name}
+        </h3>
         <p className="appointment-date">
           <span className="date">
             {moment(appointment.date).format('DD-MM-YYYY')}
@@ -54,7 +64,7 @@ export default function AppointmentList() {
 
   return (
     <div className="appointment-container">
-      {Object.keys(appointments).length > 0 ? (
+      {appointments.length > 0 ? (
         appointments.map((appointment, index) => {
           const clinic = clinics.find(
             (item) => item.clinic_id === appointment.object.clinic_id

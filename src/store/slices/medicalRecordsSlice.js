@@ -39,6 +39,42 @@ export const addMedicalRecord = createAsyncThunk(
   }
 );
 
+export const updateMedicalRecord = createAsyncThunk(
+  'medicalRecordsSlice/updateMedicalRecord',
+  async (newMedicalRecord) => {
+    try {
+      const result = await medicalRecordAPI.update(newMedicalRecord);
+      return result.data.data;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
+export const deleteDocument = createAsyncThunk(
+  'medicalRecordsSlice/deleteDocument',
+  async (document_id) => {
+    try {
+      await medicalRecordAPI.deleteDocument(document_id);
+      return document_id;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
+export const deletePrescription = createAsyncThunk(
+  'medicalRecordsSlice/deletePrescription',
+  async (prescription_id) => {
+    try {
+      await medicalRecordAPI.deletePrescription(prescription_id);
+      return prescription_id;
+    } catch (error) {
+      return Promise.reject(error.message);
+    }
+  }
+);
+
 const medicalRecordsSlice = createSlice({
   name: 'medicalRecordsSlice',
   initialState: {
@@ -90,6 +126,59 @@ const medicalRecordsSlice = createSlice({
       state.hasError = false;
     },
     [addMedicalRecord.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Update Medical Record
+    [updateMedicalRecord.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [updateMedicalRecord.fulfilled]: (state, action) => {
+      message.success('Updated medical record successfully!', 3);
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [updateMedicalRecord.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Delete document
+    [deleteDocument.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [deleteDocument.fulfilled]: (state, action) => {
+      message.success('Deleted document successfully!', 3);
+      state.medicalRecordNeedUpdate.images =
+        state.medicalRecordNeedUpdate.images.filter(
+          (item) => item.document_id !== action.payload
+        );
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [deleteDocument.rejected]: (state, action) => {
+      message.error(action.error.message, 3);
+      state.isLoading = false;
+      state.hasError = true;
+    },
+    // Delete Prescription
+    [deletePrescription.pending]: (state) => {
+      state.isLoading = true;
+      state.hasError = false;
+    },
+    [deletePrescription.fulfilled]: (state, action) => {
+      message.success('Deleted prescription successfully!', 3);
+      state.medicalRecordNeedUpdate.prescriptions =
+        state.medicalRecordNeedUpdate.prescriptions.filter(
+          (item) => item.prescription_id !== action.payload
+        );
+      state.isLoading = false;
+      state.hasError = false;
+    },
+    [deletePrescription.rejected]: (state, action) => {
       message.error(action.error.message, 3);
       state.isLoading = false;
       state.hasError = true;

@@ -5,6 +5,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
 import { GiHealthPotion } from 'react-icons/gi';
+import { FiTrash2 } from 'react-icons/fi';
+import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import {
   fetchClinicByDoctor,
@@ -17,10 +19,13 @@ import Spinner from '../../../../components/Spinner';
 import Modal from '../../../../components/Modal';
 import {
   addMedicalRecord,
-  selectMedicalRecordIsLoading,
+  deleteDocument,
+  deletePrescription,
+  fetchMedicalRecord,
   selectMedicalRecordNeedUpdate,
+  updateMedicalRecord,
 } from '../../../../store/slices/medicalRecordsSlice';
-import { FILE_TYPES, STATUS_MEDICAL_RECORD } from '../../../../constants';
+import { STATUS_MEDICAL_RECORD } from '../../../../constants';
 import {
   fetchProducts,
   selectProducts,
@@ -94,22 +99,6 @@ const formItemLayoutProduct = {
     },
   },
 };
-const tailFormItemLayout = {
-  wrapperCol: {
-    xl: {
-      span: 24,
-      offset: 4,
-    },
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
 
 export default function MedicalRecordForm({ mode }) {
   const { record_id } = useParams();
@@ -120,7 +109,13 @@ export default function MedicalRecordForm({ mode }) {
   const [modeHaveAccount, setModeHaveAccount] = useState(true);
   const [fileList, setFileList] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [cloneUpdateProducts, setCloneUpdateProducts] = useState([]);
+  const [cloneUpdateDocuments, setCloneUpdateDocuments] = useState([]);
   const [isShowProductForm, setIsShowProductForm] = useState(false);
+  const [isDeleteProduct, setIsDeleteProduct] = useState(false);
+  const [isDeleteDocument, setIsDeleteDocument] = useState(false);
+  const [documentToDelete, setDocumentToDelete] = useState({});
+  const [productToDelete, setProductToDelete] = useState({});
   const clinic = useSelector(selectClinicByDoctor);
   const patients = useSelector(selectPatients);
   const products = useSelector(selectProducts);
@@ -149,6 +144,26 @@ export default function MedicalRecordForm({ mode }) {
     }
   }, [dispatch, products]);
 
+  // Fetch medical record need update
+  useEffect(() => {
+    if (mode === 'update') {
+      dispatch(fetchMedicalRecord(record_id));
+    }
+  }, [dispatch, mode, record_id]);
+
+  // Clone product, document when fetching medical record from update
+  useEffect(() => {
+    if (mode === 'update' && medicalRecordNeedUpdate.length > 0) {
+      setCloneUpdateProducts(medicalRecordNeedUpdate.prescriptions);
+      setCloneUpdateDocuments(medicalRecordNeedUpdate.images);
+    }
+  }, [
+    medicalRecordNeedUpdate.images,
+    medicalRecordNeedUpdate.length,
+    medicalRecordNeedUpdate.prescriptions,
+    mode,
+  ]);
+
   // Reset fields whenever change mode account back to no when creating
   useEffect(() => {
     if (!modeHaveAccount && mode === 'create') {
@@ -156,15 +171,35 @@ export default function MedicalRecordForm({ mode }) {
     }
   }, [form, mode, modeHaveAccount]);
 
+  // Fill form when mode update
+  useEffect(() => {
+    if (mode === 'update' && Object.keys(medicalRecordNeedUpdate).length > 0) {
+      form.setFieldsValue({
+        patient_id: medicalRecordNeedUpdate.medical_record.patient_id,
+        patient_name: medicalRecordNeedUpdate.medical_record.patient_name,
+        patient_address: medicalRecordNeedUpdate.medical_record.patient_address,
+        phone: medicalRecordNeedUpdate.medical_record.phone,
+        age: medicalRecordNeedUpdate.medical_record.age,
+        email: medicalRecordNeedUpdate.medical_record.email,
+        diagnose: medicalRecordNeedUpdate.medical_record.diagnose,
+        disease_progression:
+          medicalRecordNeedUpdate.medical_record.disease_progression,
+        status: medicalRecordNeedUpdate.medical_record.status,
+      });
+      setFileList(medicalRecordNeedUpdate.images);
+      setSelectedProducts(medicalRecordNeedUpdate.prescriptions);
+    }
+  }, [form, medicalRecordNeedUpdate, mode, modeHaveAccount]);
+
   const productColumns = [
     {
       title: 'ID',
-      key: 'product id',
-      dataIndex: 'product_id',
+      key: 'prescription_id',
+      dataIndex: 'prescription_id',
     },
     {
       title: 'Product Name',
-      key: 'product name',
+      key: 'product_name',
       dataIndex: 'product_name',
     },
     {
@@ -176,6 +211,25 @@ export default function MedicalRecordForm({ mode }) {
       title: 'Description',
       key: 'description',
       dataIndex: 'description',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record, index) => (
+        <div className="button-container">
+          <Button
+            type="button"
+            className="button button--text--delete"
+            onClick={() => {
+              setIsDeleteProduct(true);
+              setProductToDelete(record);
+            }}
+          >
+            <FiTrash2 className="icon" />
+            <span>Delete</span>
+          </Button>
+        </div>
+      ),
     },
   ];
 
@@ -190,8 +244,8 @@ export default function MedicalRecordForm({ mode }) {
     setSelectedProducts([...selectedProducts, newProduct]);
   };
 
-  // Popup form
-  const renderBody = () => (
+  // Popup product
+  const renderModalProduct = () => (
     <div className="content content--confirm">
       <div className="close-btn" onClick={() => setIsShowProductForm(false)}>
         <IoClose className="close-icon" />
@@ -211,7 +265,6 @@ export default function MedicalRecordForm({ mode }) {
         {/* Products */}
         <Form.Item label="Product Item" name="product_id">
           <Select
-            disabled={mode === 'update'}
             className="input-custom-disabled"
             onChange={(e) => {
               const selectedProduct = products.find(
@@ -279,9 +332,9 @@ export default function MedicalRecordForm({ mode }) {
         </Form.Item>
 
         {/* Buttons */}
-        <Form.Item className="btn-container">
+        <div className="btn-container button--container--product">
           <Button
-            className="button button--light"
+            className="button button--light "
             onClick={() => setIsShowProductForm(false)}
           >
             Cancel
@@ -289,8 +342,81 @@ export default function MedicalRecordForm({ mode }) {
           <Button type="submit" className="button button--blue--dark">
             Add
           </Button>
-        </Form.Item>
+        </div>
       </Form>
+    </div>
+  );
+
+  // Popup confirm delete product
+  const renderModalDeleteProduct = () => (
+    <div className="content content--confirm">
+      <div className="close-btn" onClick={() => setIsDeleteProduct(false)}>
+        <IoClose className="close-icon" />
+      </div>
+      <IoIosCloseCircleOutline className="icon-title icon-title--delete" />
+      <h3 className="message">Are you sure to delete this prescription?</h3>
+      <h3 className="object">{productToDelete.product_name}</h3>
+      <div className="btn-container">
+        <Button
+          className="button button--light"
+          onClick={() => setIsDeleteProduct(false)}
+        >
+          Cancel
+        </Button>
+        <Button
+          className="button button--blue--dark"
+          onClick={() => {
+            dispatch(deletePrescription(productToDelete.prescription_id));
+            setIsDeleteProduct(false);
+            const index = selectedProducts.indexOf(productToDelete);
+            const newSelectedProducts = selectedProducts.slice();
+            newSelectedProducts.splice(index, 1);
+            setSelectedProducts(newSelectedProducts);
+          }}
+        >
+          Delete
+        </Button>
+      </div>
+    </div>
+  );
+
+  // Popup confirm delete document
+  const renderModalDeleteDocument = (index) => (
+    <div className="content content--confirm">
+      <div className="close-btn" onClick={() => setIsDeleteDocument(false)}>
+        <IoClose className="close-icon" />
+      </div>
+      <IoIosCloseCircleOutline className="icon-title icon-title--delete" />
+      <h3 className="message">Are you sure to delete this image?</h3>
+      <div className="object">
+        <img
+          className="img"
+          src={documentToDelete.url}
+          width="100%"
+          alt="img confirm delete"
+        />
+      </div>
+      <div className="btn-container">
+        <Button
+          className="button button--light"
+          onClick={() => setIsDeleteDocument(false)}
+        >
+          Cancel
+        </Button>
+        <Button
+          className="button button--blue--dark"
+          onClick={() => {
+            dispatch(deleteDocument(documentToDelete.document_id));
+            setIsDeleteDocument(false);
+            const index = fileList.indexOf(documentToDelete);
+            const newFileList = fileList.slice();
+            newFileList.splice(index, 1);
+            setFileList(newFileList);
+          }}
+        >
+          Delete
+        </Button>
+      </div>
     </div>
   );
 
@@ -306,20 +432,31 @@ export default function MedicalRecordForm({ mode }) {
     formData.append('patient_address', values.patient_address);
     formData.append('diagnose', values.diagnose);
     formData.append('disease_progression', values.disease_progression);
-    selectedProducts.forEach((product) => {
-      formData.append('prescriptions', product);
-    });
-    fileList.forEach((file) => {
-      formData.append('documents', file);
-    });
-
-    dispatch(addMedicalRecord(formData));
-    // console.log(formData.getAll('prescriptions'));
+    if (mode === 'create') {
+      formData.append('prescriptions', JSON.stringify(selectedProducts));
+      fileList.forEach((file) => formData.append('documents', file));
+      dispatch(addMedicalRecord(formData));
+    } else {
+      // Compare length between clone and selected arr to identity where it should update or not.
+      if (cloneUpdateDocuments.length !== fileList.length) {
+        fileList
+          .slice(cloneUpdateDocuments.length)
+          .forEach((file) => formData.append('documents', file));
+      }
+      if (cloneUpdateProducts.length !== selectedProducts.length) {
+        formData.append(
+          'prescriptions',
+          JSON.stringify(selectedProducts.slice(cloneUpdateProducts.length))
+        );
+      }
+      formData.append('record_id', record_id);
+      dispatch(updateMedicalRecord(formData));
+    }
   };
 
   return (
     <>
-      <h3 className="title">
+      <h3 className="title medical-heading">
         {mode === 'create' ? 'Add' : 'Update'} Medical Record
       </h3>
       <Form
@@ -333,54 +470,27 @@ export default function MedicalRecordForm({ mode }) {
         {/* Medical Record Information */}
         <div className="medical-record-container">
           <h3 className="title-separate">Medical Record Information</h3>
-
-          {/* Change mode account */}
-          {mode === 'create' && (
-            <div className="switch-table">
-              <span className="text-mode">
-                {modeHaveAccount
-                  ? 'Payment has patient accounts'
-                  : 'Payment does not have patient accounts'}
-                :{' '}
-              </span>
-              <Switch
-                onChange={(values) => {
-                  setModeHaveAccount(values);
-                }}
-                defaultChecked={modeHaveAccount}
-                className="switch"
-              />
-            </div>
-          )}
-
-          {/* Patient Name */}
-          {((mode === 'create' && !modeHaveAccount) ||
-            (mode === 'update' &&
-              !medicalRecordNeedUpdate.medical_record.patient_id)) && (
-            <>
-              {/* Name */}
-              <Form.Item
-                name="patient_name"
-                label="Patient Name"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input patient name!',
-                  },
-                ]}
-              >
-                <Input
-                  disabled={mode === 'update'}
-                  className="input-custom-disabled"
-                  placeholder="Enter patient name!"
-                />
-              </Form.Item>
-            </>
-          )}
+          <div className="switch-table">
+            <span className="text-mode">
+              {modeHaveAccount
+                ? 'Payment has patient accounts'
+                : 'Payment does not have patient accounts'}
+              :{' '}
+            </span>
+            <Switch
+              onChange={(values) => {
+                setModeHaveAccount(values);
+              }}
+              defaultChecked={modeHaveAccount}
+              className="switch"
+            />
+          </div>
 
           {/* Patient Item */}
           {((mode === 'create' && modeHaveAccount) ||
             (mode === 'update' &&
+              modeHaveAccount &&
+              Object.keys(medicalRecordNeedUpdate).length > 0 &&
               medicalRecordNeedUpdate.medical_record.patient_id)) && (
             <>
               {/* Patients */}
@@ -395,7 +505,6 @@ export default function MedicalRecordForm({ mode }) {
                 ]}
               >
                 <Select
-                  disabled={mode === 'update'}
                   className="input-custom-disabled"
                   onChange={(e) => {
                     const selectedPatient = patients.find(
@@ -420,28 +529,26 @@ export default function MedicalRecordForm({ mode }) {
                   ))}
                 </Select>
               </Form.Item>
-
-              {/* Patient Name */}
-              <Form.Item
-                name="patient_name"
-                label="Patient Name"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input patient name!',
-                  },
-                ]}
-              >
-                <Input
-                  disabled={modeHaveAccount}
-                  className="input-custom-disabled"
-                  placeholder={`${
-                    modeHaveAccount ? '' : 'Enter patient name!'
-                  }`}
-                />
-              </Form.Item>
             </>
           )}
+
+          {/* Patient Name */}
+          <Form.Item
+            name="patient_name"
+            label="Patient Name"
+            rules={[
+              {
+                required: true,
+                message: 'Please input patient name!',
+              },
+            ]}
+          >
+            <Input
+              disabled={modeHaveAccount}
+              className="input-custom-disabled"
+              placeholder={`${modeHaveAccount ? '' : 'Enter patient name!'}`}
+            />
+          </Form.Item>
 
           {/* Phone */}
           <Form.Item
@@ -589,11 +696,10 @@ export default function MedicalRecordForm({ mode }) {
                   const newFileList = fileList.slice();
                   newFileList.splice(index, 1);
                   setFileList(newFileList);
+                } else {
+                  setIsDeleteDocument(true);
+                  setDocumentToDelete(file);
                 }
-                // else {
-                //   setIsShowDelete(true);
-                //   setImageDelete(file);
-                // }
               }}
               beforeUpload={(file) => {
                 // Fake sending document to action props succesfully
@@ -637,7 +743,9 @@ export default function MedicalRecordForm({ mode }) {
         {/* Prescriptions */}
         <div className="medical-record-container">
           <div className="header">
-            <h3 className="title-separate">Prescriptions</h3>
+            <h3 className="title-separate title-prescriptions">
+              Prescriptions
+            </h3>
             <Button
               type="button"
               className="button button--light"
@@ -656,40 +764,47 @@ export default function MedicalRecordForm({ mode }) {
             }}
             columns={productColumns}
             dataSource={selectedProducts}
-            rowKeys={(record) => record.product_id}
+            rowKey={(record) => record.prescription_id}
           />
         </div>
 
         {/* Button */}
-        <Form.Item {...tailFormItemLayout}>
-          <Button className="button button--main" type="submit">
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              `${
-                mode === 'create'
-                  ? 'Add Medical Record'
-                  : 'Update Medical Record'
-              }`
-            )}
-          </Button>
-        </Form.Item>
-
-        <Form.Item>
-          <Button
-            type="button"
-            className="button button--dark--light"
-            onClick={() => console.log(selectedProducts)}
-          >
-            Cilck me
-          </Button>
-        </Form.Item>
+        <Button
+          className="button button--blue--dark button--submit"
+          type="submit"
+        >
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            `${
+              mode === 'create' ? 'Add Medical Record' : 'Update Medical Record'
+            }`
+          )}
+        </Button>
       </Form>
+
+      {/* Form Product */}
       <Modal
         className={`${isShowProductForm ? 'active' : ''}`}
         onClickClose={() => setIsShowProductForm(false)}
         isOpen={isShowProductForm}
-        renderBody={renderBody}
+        renderBody={renderModalProduct}
+      />
+
+      {/* Modal for confirm delete product */}
+      <Modal
+        className={`${isDeleteProduct ? 'active' : ''}`}
+        onClickClose={() => setIsDeleteProduct(false)}
+        isOpen={isDeleteProduct}
+        renderBody={renderModalDeleteProduct}
+      />
+
+      {/* Modal for confirm delete document */}
+      <Modal
+        className={`${isDeleteDocument ? 'active' : ''}`}
+        onClickClose={() => setIsDeleteDocument(false)}
+        isOpen={isDeleteDocument}
+        renderBody={renderModalDeleteDocument}
       />
     </>
   );
